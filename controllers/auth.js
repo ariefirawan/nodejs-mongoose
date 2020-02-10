@@ -1,5 +1,14 @@
+const nodemailer = require('nodemailer');
+const sendgridtransports = require('nodemailer-sendgrid-transport');
+
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+
+const transport = nodemailer.createTransport(sendgridtransports({
+    auth: {
+        api_key: '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'
+    }
+}));
 
 exports.getLogin = (req, res, next) => {
     let message = req.flash('error');
@@ -81,7 +90,16 @@ exports.postSignUp = (req, res, next) => {
             });
             return user.save();
         })
-        .then(() => res.redirect('/login'))
+        .then(() => {
+            res.redirect('/login')
+            return transport.sendMail({
+                to: email,
+                from: 'gg@dota2.com',
+                subject: 'Berhasil Sign Up dan kirim email' ,
+                html: '<h1>successfully Sign Up!</h1>'
+            })
+            .catch(err => console.log(err))
+        })
         .catch(err => console.log(err))
     })
 }

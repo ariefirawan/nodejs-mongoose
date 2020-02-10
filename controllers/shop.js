@@ -99,7 +99,7 @@ exports.postOrder = (req, res, next) => {
     });
     const order = new Order({
       user: {
-        name: req.user.email,
+        email: req.user.email,
         //userId type datanya objectId otomatis terisi Id dari model
         userId: req.user
       },
