@@ -55,7 +55,11 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
-app.use(errorController.get404);
+app.use((error, req, res, next) => {
+    res.redirect('/500');
+})
+app.use(errorController.get500);
+app.use(errorController.get500);
 
 mongoose.connect('mongodb+srv://ariefirawant:dksq7mT60cz1Qdnj@cluster0-fv6bh.mongodb.net/shop')
     .then(result => {
